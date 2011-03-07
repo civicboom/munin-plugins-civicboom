@@ -42,7 +42,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "autoconf":
 if len(sys.argv) > 1 and sys.argv[1] == "config":
     print('graph_title Civicboom Members')
     #print('graph_args --base 1000 -l 0')
-    print('graph_vlabel number')
+    print('graph_vlabel Members')
     print('graph_category civicboom')
     print('users.label Users')
     print('users.type GAUGE')
