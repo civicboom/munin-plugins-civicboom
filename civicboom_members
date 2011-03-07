@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+"""
+=head1 NAME
+
+civicboom_members - Plugin to monitor civicboom
+
+=head1 CONFIGURATION
+
+No configuration
+
+=head1 NOTES
+
+
+
+=head1 AUTHOR
+
+Shish <shish@civicboom.com>
+
+=head1 LICENSE
+
+BSD
+
+=head1 MAGIC MARKERS
+
+ #%# family=auto
+ #%# capabilities=autoconf
+
+"""
+
+import urllib2
+import sys
+import json
+
+if len(sys.argv) > 1 and sys.argv[1] == "autoconf":
+    if urllib2.urlopen("http://localhost/misc/stats.json").read():
+        print("yes")
+    else:
+        print("no")
+    sys.exit(0)
+
+if len(sys.argv) > 1 and sys.argv[1] == "config":
+    print('graph_title Civicboom Members')
+    #print('graph_args --base 1000 -l 0')
+    print('graph_vlabel number')
+    print('graph_category civicboom')
+    print('users.label Users')
+    print('users.type GAUGE')
+    print('groups.label Groups')
+    print('groups.type GAUGE')
+    print('pending.label Pending')
+    print('pending.type GAUGE')
+    sys.exit(0)
+
+data = urllib2.urlopen("http://localhost/misc/stats.json").read()
+d    = json.loads(data)
+
+if d['status'] == "ok":
+    print("users.value %d"   % (d['data']['users'],))
+    print("groups.value %d"  % (d['data']['groups'], ))
+    print("pending.value %d" % (d['data']['pending'], ))
+else:
+    print("Error")
+    print(d['message'])
+

@@ -1,0 +1,6 @@
+Package: munin-plugins-civicboom
+Version: VERSION
+Architecture: all
+Maintainer: Shish <shish@civicboom.com>
+Depends: python
+Description: Some plugins for monitoring civicboom installs

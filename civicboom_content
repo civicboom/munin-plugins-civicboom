@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+
+"""
+=head1 NAME
+
+civicboom_content - Plugin to monitor civicboom
+
+=head1 CONFIGURATION
+
+No configuration
+
+=head1 NOTES
+
+
+
+=head1 AUTHOR
+
+Shish <shish@civicboom.com>
+
+=head1 LICENSE
+
+BSD
+
+=head1 MAGIC MARKERS
+
+ #%# family=auto
+ #%# capabilities=autoconf
+
+"""
+
+import urllib2
+import sys
+import json
+
+if len(sys.argv) > 1 and sys.argv[1] == "autoconf":
+    if urllib2.urlopen("http://localhost/misc/stats.json").read():
+        print("yes")
+    else:
+        print("no")
+    sys.exit(0)
+
+if len(sys.argv) > 1 and sys.argv[1] == "config":
+    print('graph_title Civicboom Content')
+    #print('graph_args --base 1000 -l 0')
+    print('graph_vlabel number')
+    print('graph_category civicboom')
+    print('requests.label Requests')
+    print('requests.type GAUGE')
+    #print('requests.max 1000000')
+    #print('requests.draw AREA')
+    print('responses.label Responses')
+    print('responses.type GAUGE')
+    #print('responses.max 1000000')
+    #print('responses.draw STACK')
+    print('articles.label Articles')
+    print('articles.type GAUGE')
+    #print('articles.max 1000000')
+    #print('articles.draw STACK')
+    print('comments.label Comments')
+    print('comments.type GAUGE')
+    #print('comments.max 1000000')
+    #print('comments.draw STACK')
+    sys.exit(0)
+
+data = urllib2.urlopen("http://localhost/misc/stats.json").read()
+d    = json.loads(data)
+
+if d['status'] == "ok":
+    print("requests.value %d"  % (d['data']['requests'], ))
+    print("responses.value %d" % (d['data']['responses'],))
+    print("articles.value %d"  % (d['data']['articles'], ))
+    print("comments.value %d"  % (d['data']['comments'], ))
+else:
+    print("Error")
+    print(d['message'])
+
